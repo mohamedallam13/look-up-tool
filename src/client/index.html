@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_self">
+    
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <?!= sitePagesManager.include("index-css"); ?>
+  <body>
+  
+
+    <div class="Container"><!--Open container including the buttons and controls-->
+    <h1 style= "margin:15px;" ><?= title; ?></h1><!--no "!" to stops html code included in the string from being evaluated-->
+    
+    <div class="row"><!--Open row - Including description(1)--> 
+    <div class="input-field col s4"><!--Open Column including the switch-->
+    <!-- Switch -->
+    <div class="switch" id="toggleSection">
+    <label>
+    Main
+    <input type="checkbox" id="toggleSwitches">
+    <span class="lever"></span>
+    Third Party
+    </label>
+    </div>
+    
+    <!-- Switch closed -->
+    </div><!--Close Column including the search Input-->
+    </div> <!--Close row (1)-->
+    
+    <div id="index"><!--Main Page Div-->
+        
+    <div class="row"><!--Open row - Including description(1)--> 
+    <p id = "inst" style= "margin:15px;"><i>To search for refunds, please first select one of the criteria, followed by the search term.</i></p>    
+    </div> <!--Close row (1)-->
+          
+    <div class="row"><!--Open row - Including Dropdown and search(2)-->
+    <div class="input-field col s4"><!--Open Column including the dropdown-->
+    <select id = "app">
+    </select>
+    <label></label>
+    </div><!--Close Column including the dropdown-->
+    <div class="input-field col s4"><!--Open Column including the search Input-->
+    <input id="in1" type="text" class="validate">
+    <label for="in1">Search..</label>
+    </div><!--Close Column including the search Input-->
+    </div><!--Closing Row (2)-->
+    
+    <div class="row"><!--Open row - Including the checkboxes to filter(3)-->       
+    <div class="input-field col s3"><!--Open div - List to populate-->   
+    <ul id="checkboxField"></ul>
+    </div><!--Close div-->   
+    </div><!--Closing Row (3)-->
+    
+    <div class="row"><!--Open row - Including error showing(4)-->
+    <p id = "error" style="font-size:100%; color:red; margin:15px;"></p>
+    </div><!--Closing Row (4)-->
+    
+    <div class="row"><!--Open row - Including submit button(5)-->
+    <button id="btn" style= "margin:15px;" class="waves-effect waves-light btn-small amber darken-3"><i class ="material-icons left">chevron_right</i>Clear</button>
+    </div><!--Closing Row (5)-->
+    
+    <div class="row"><!--Open row - Including "not found"(6)-->
+    <p id = "notfound" style="text-align: center; font-size:300%; color:red; margin:15px;"></p>
+    </div><!--Closing Row (6)-->
+    
+    <div class="row"><!--Open row - Including Table(7)-->
+    <table id = "lookUpTable" class="striped"></table>
+    </div><!--Closing Row (7)-->
+    
+    </div><!--Closing Buttons Controls Container-->
+    </div><!--Closing Main Page div (index)-->
+    
+    <div id= "loading"class="loadingio-spinner-eclipse-0h8lo034c9jb">
+    <div class="ldio-5sy3rbz3ekb">
+    <div> </div>
+    </div>
+    
+    </div><!--close container including the buttons and controls-->
+    
+  </body>
+   <?!= sitePagesManager.include("index-js"); ?><!--the "!" to evalute or execute the html, not treat it as just string-->
+</html>
+
+

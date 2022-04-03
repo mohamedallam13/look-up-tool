@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<script>
+window.onload = load;
+
+var allDataObj
+
+var Dropdown = document.querySelectorAll('select');
+var instances = M.FormSelect.init(Dropdown);  
+
+
+document.getElementById("btn").addEventListener("click",clearFields);
+document.getElementById("in1").addEventListener("input",retrieveInfo);
+document.getElementById("app").addEventListener("input",retrieveInfo);
+document.getElementById("toggleSection").addEventListener("change",load);
+
+function load(){
+hidePage();
+allDataObj = "";
+clearFields();
+var section = getSection();
+google.script.run.withSuccessHandler(setAllDataObj).getJSONDB(section);
+onReady(showPage);
+}
+
+
+function getSection() {
+var toggleElement = document.getElementById('toggleSwitches');
+if (toggleElement.checked) {
+return "thirdParty"
+}
+return "normalClaims"
+}
+
+function setAllDataObj(allDataObjString){
+allDataObj = JSON.parse(allDataObjString);
+}
+
+
+function onReady(callback) {
+var intervalID = window.setInterval(checkReady, 1000);
+function checkReady() {
+if (allDataObj !== '') {
+window.clearInterval(intervalID);
+setDropdowns();
+callback.call(this);
+}
+}
+}
+
+function setDropdowns(){
+document.getElementById("app").innerHTML = allDataObj.selectByinnerHTML;
+var instances = M.FormSelect.init(Dropdown); 
+}
+
+function show(id, value) {
+document.getElementById(id).style.display = value ? 'block' : 'none';
+}
+
+function showPage() {
+show('index', true);
+show('loading', false);
+}
+
+function hidePage(){
+show('index', false);
+show('loading', true);
+}
+
+
+function clearFields(){
+
+document.getElementById("in1").value = ''
+document.getElementById("lookUpTable").innerHTML = ''
+document.getElementById("app").value = ''
+document.getElementById('checkboxField').innerHTML = '';
+var Dropdown = document.querySelectorAll('select');
+var instances = M.FormSelect.init(Dropdown);
+M.updateTextFields();
+
+
+}
+
+function retrieveInfo(){
+
+clearResultsFields()
+
+var input = document.getElementById("in1").value.replace(/[\|\&;\'\t\n\r\?\:\.#\[\]\$\%\@\"\“\”\„\“\/\-\<>\(\)\+,]/g, "");
+var prop = document.getElementById("app").value;    
+
+if(input !== '' && prop !== ''){
+
+var valString = allDataObj.selectBy[prop]
+
+if(!input.match(valString)){ 
+
+document.getElementById("error").innerHTML = prop + ' is incorrect' ;
+
+}else{
+
+document.getElementById("lookUpTable").innerHTML = '<div class="progress"><div class="indeterminate"></div></div>'
+
+var resultObjArray = retrieveFromDB(prop,input);
+if(resultObjArray.length > 0){
+populate(resultObjArray);
+}else{
+document.getElementById("notfound").innerHTML = "No Results."
+document.getElementById("lookUpTable").innerHTML =  "";
+}
+
+}
+
+}
+
+}
+
+function clearResultsFields(){
+document.getElementById("lookUpTable").innerHTML = ''
+document.getElementById("error").innerHTML = ''
+document.getElementById("notfound").innerHTML = ''
+var checkboxes = document.getElementById('checkboxField');
+checkboxes.innerHTML = '';
+}
+
+function retrieveFromDB(prop,input){
+input = input.toUpperCase();
+if(allDataObj.indexes[prop][input]){
+var resultKeysArray = allDataObj.indexes[prop][input];
+var resultObjArray = resultKeysArray.map(function(key){
+  return allDataObj.dbObj[key];
+})
+return resultObjArray;
+}
+return [];
+}
+
+function populate(resultObjArray){
+
+//    var searchby = addonObj.searchby;
+//    var order = addonObj.displayFields;
+//    var ifBlank = addonObj["If Blank"];
+//    var filtercol = addonObj.filter;
+//    var filterobj = {};
+
+    var header = Object.keys(allDataObj.headerMap);
+
+    if(Object.keys(resultObjArray).length == 0){
+    document.getElementById("lookUpTable").innerHTML = '';
+    document.getElementById("notfound").innerHTML = 'Entry not found!';
+    }else{
+    
+//    var checkboxes = document.getElementById('checkboxField');
+//    checkboxes.innerHTML = '';
+//    var title = "Filter Out";
+//    var titleNode = document.createTextNode(title);
+//    var span = document.createElement('span');
+//    span.style.fontSize = "20px";
+//    span.appendChild(titleNode);
+//    checkboxes.appendChild(span);
+//    checkboxes.appendChild(document.createElement("br"));
+    
+    var table ='';
+    var entry = '';
+    
+    
+    table += '<thead><tr>';
+    header.forEach(function(head){
+    table += '<th>' + head + '</th>';
+    })
+    
+    table += '</tr></thead><tbody>';
+    
+    resultObjArray.forEach(function(resultObj){
+    table += '<tr>';
+    header.forEach(function(head){
+    var key = allDataObj.headerMap[head];
+    table += '<td>' + resultObj[key] + '</td>';
+    })
+    table += '</tr>';
+    })
+    table += '</tbody>';
+    
+    
+//    for(var id in resultObjArray){
+//    
+//    var obj = result[id];
+//    
+//    table += '<tr>';
+//    
+//    for(var i = 0; i < order.length; i++){
+//    
+//    var key = order[i];
+//    
+//    entry = obj[key] == ''?  ifBlank[key] :  obj[key];
+//    
+//    console.log(ifBlank[key])
+//    
+//    table += '<td>'+ entry + '</td>';
+//    
+//    if(filtercol.indexOf(key) !== -1){
+//    
+//    if(!filterobj.hasOwnProperty(key)){
+//    
+//    filterobj[key] = [entry];
+//    
+//    createCheckboxes(entry,checkboxes);    
+//    
+//    }else if(filterobj[key].indexOf(entry) == -1){
+//    
+//    filterobj[key].push(entry);
+//    
+//    createCheckboxes(entry,checkboxes);    
+//    
+//    }        
+//    
+//    }
+//    
+//    }
+//    
+//    table += '</tr>';
+//    
+//    
+//    }
+//    
+//    table += '</tbody>';
+    
+    document.getElementById("lookUpTable").innerHTML = table;
+    document.getElementById("lookUpTable").classList.add('myTable');
+    
+//    var showIfValue = addonObj.showIfValue;
+//    
+//    var sivCols = showIfValue.map(function(x){return order.indexOf(x);});
+    
+//    console.log(sivCols)
+//    
+//    showIFValue(sivCols);
+    
+    }
+
+}
+
+</script>
+
+
