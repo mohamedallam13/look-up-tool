@@ -27,14 +27,12 @@ To install this application, in VS code after cloning the repo, use [clasp CLI](
 
 ```
 clasp create [scriptTitle]
-
 ```
 
 Then add the destination script id to the .clasp.json file and then push the code using the following command
 
 ```
 clasp push
-
 ```
 
 ## Features
