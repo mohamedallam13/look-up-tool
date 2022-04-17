@@ -7,6 +7,7 @@ A Google Apps Script WebApp that looks up entries based on different parameters,
 ## Table of Contents
 
 * [Technologies](#technologies)
+* [Installation](#installation)
 * [Features](#features)
 * [Questions](#questions)
 
@@ -18,7 +19,23 @@ A Google Apps Script WebApp that looks up entries based on different parameters,
 * JavaScript ES6
 * HTML5
 * CSS3
+* clasp
 
+## Installation
+
+To install this application, in VS code after cloning the repo, use [clasp CLI](https://developers.google.com/apps-script/guides/clasp) to create the .clasp.json file
+
+``
+clasp create [scriptTitle]
+
+``
+
+Then add the destination script id to the .clasp.json file and then push the code using the following command
+
+``
+clasp push
+
+``
 
 ## Features
 
