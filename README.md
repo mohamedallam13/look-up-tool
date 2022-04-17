@@ -16,6 +16,7 @@ A Google Apps Script WebApp that looks up entries based on different parameters,
 ## Technologies 
 
 * Google Apps Script
+* JavaScript ES6
 * HTML5
 * CSS3
 
@@ -26,6 +27,7 @@ A Google Apps Script WebApp that looks up entries based on different parameters,
 * Different Criteria to look up entries
 * Displays results in a table with dynamic columns that woould appear based on conditions
 * Relies on a simple JSON file storage scheme that includes an index file
+* Switch between 2 databases
 
 
 
