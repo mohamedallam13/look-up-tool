@@ -7,8 +7,7 @@ A Google Apps Script WebApp that looks up entries based on different parameters,
 ## Table of Contents
 
 * [Technologies](#technologies)
-* [Installation](#installation)
-* [Feature](#feature)
+* [Features](#features)
 * [Questions](#questions)
 
 
